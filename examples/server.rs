@@ -1,24 +1,17 @@
 mod utils;
 
 use log::debug;
-use std::fs::File;
-use std::io;
+use std::fmt::Write;
 use std::os::unix::io::AsRawFd;
-use indicatif::{ProgressBar, ProgressStyle};
-use reqwest::blocking::Client;
-use reqwest::header::CONTENT_LENGTH;
 
 use smoltcp::iface::{Config, Interface, SocketSet};
 use smoltcp::phy::{wait as phy_wait, Device, Medium};
 use smoltcp::socket::{tcp, udp};
 use smoltcp::time::{Duration, Instant};
 use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr, Ipv4Address, Ipv6Address};
-use std::io::Write;
-use std::io::Read;
-use std::thread::sleep;
 
 fn main() {
-    //utils::setup_logging("");
+    utils::setup_logging("");
 
     let (mut opts, mut free) = utils::create_options();
     utils::add_tuntap_options(&mut opts, &mut free);
@@ -86,8 +79,6 @@ fn main() {
     let tcp3_handle = sockets.add(tcp3_socket);
     let tcp4_handle = sockets.add(tcp4_socket);
 
-
-
     let mut tcp_6970_active = false;
     loop {
         let timestamp = Instant::now();
@@ -121,9 +112,7 @@ fn main() {
 
         if socket.can_send() {
             debug!("tcp:6969 send greeting");
-            for _ in 0..10 {
-                socket.send_slice(b"hello\n").unwrap();
-            }
+            writeln!(socket, "hello").unwrap();
             debug!("tcp:6969 close");
             socket.close();
         }
