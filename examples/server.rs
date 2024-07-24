@@ -1,7 +1,6 @@
 mod utils;
 
 use log::debug;
-use std::fmt::Write;
 use std::fs::File;
 use std::io;
 use std::os::unix::io::AsRawFd;
