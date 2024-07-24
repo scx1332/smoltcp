@@ -126,7 +126,7 @@ fn main() {
     // Read the response body in chunks and write to the file
     while let Ok(n) = response.read(&mut buffer) {
         if n == 0 { break; }
-        file.write_all(&buffer[..n])?;
+        file.write_all(&buffer[..n]).unwrap();
         downloaded += n as u64;
         pb.set_position(downloaded);
     }
