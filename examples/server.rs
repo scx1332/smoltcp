@@ -14,7 +14,7 @@ use smoltcp::socket::{tcp, udp};
 use smoltcp::time::{Duration, Instant};
 use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr, Ipv4Address, Ipv6Address};
 use std::io::Write;
-
+use std::io::Read;
 fn main() {
     utils::setup_logging("");
 
@@ -166,7 +166,7 @@ fn main() {
 
         if socket.can_send() {
             debug!("tcp:6969 send greeting");
-            writeln!(socket, "hello").unwrap();
+            //writeln!(socket, "hello").unwrap();
             debug!("tcp:6969 close");
             socket.close();
         }
