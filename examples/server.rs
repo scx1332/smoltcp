@@ -14,6 +14,7 @@ use smoltcp::phy::{wait as phy_wait, Device, Medium};
 use smoltcp::socket::{tcp, udp};
 use smoltcp::time::{Duration, Instant};
 use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr, Ipv4Address, Ipv6Address};
+use std::io::Write;
 
 fn main() {
     utils::setup_logging("");
