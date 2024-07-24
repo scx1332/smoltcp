@@ -32,6 +32,8 @@ getopts = "0.2"
 rand = "0.8"
 url = "2.0"
 rstest = "0.17"
+reqwest = "0.12.5"
+indicatif = "0.16"
 
 [features]
 std = ["managed/std", "alloc"]

@@ -2,7 +2,12 @@ mod utils;
 
 use log::debug;
 use std::fmt::Write;
+use std::fs::File;
+use std::io;
 use std::os::unix::io::AsRawFd;
+use indicatif::{ProgressBar, ProgressStyle};
+use reqwest::Client;
+use reqwest::header::CONTENT_LENGTH;
 
 use smoltcp::iface::{Config, Interface, SocketSet};
 use smoltcp::phy::{wait as phy_wait, Device, Medium};
@@ -78,6 +83,55 @@ fn main() {
     let tcp2_handle = sockets.add(tcp2_socket);
     let tcp3_handle = sockets.add(tcp3_socket);
     let tcp4_handle = sockets.add(tcp4_socket);
+
+
+    // The URL of the file you want to download
+    let url = "https://github.com/golemfactory/yagna/releases/download/v0.15.2/golem-provider-windows-v0.15.2.zip";
+
+    // The path where you want to save the downloaded file
+    let file_path = "downloaded_file.zip";
+
+    // Create an HTTP client
+    let client = Client::new();
+
+    // Send a GET request to the URL
+    let mut response = client.get(url).send()?;
+
+    // Ensure the request was successful
+    if !response.status().is_success() {
+        return Err(Box::new(io::Error::new(io::ErrorKind::Other, "Failed to download file")));
+    }
+
+    // Get the content length from the headers if available
+    let total_size = response
+        .headers()
+        .get(CONTENT_LENGTH)
+        .and_then(|len| len.to_str().ok())
+        .and_then(|len| len.parse().ok())
+        .unwrap_or(0);
+
+    // Create a progress bar
+    let pb = ProgressBar::new(total_size);
+    pb.set_style(ProgressStyle::default_bar()
+        .template("{msg}\n{wide_bar} {bytes}/{total_bytes}")
+        .progress_chars("=>-"));
+
+    // Open a file in write mode
+    let mut file = File::create(file_path)?;
+
+    // Create a buffer to read chunks of data
+    let mut buffer = [0; 8192];
+    let mut downloaded = 0;
+
+    // Read the response body in chunks and write to the file
+    while let Ok(n) = response.read(&mut buffer) {
+        if n == 0 { break; }
+        file.write_all(&buffer[..n])?;
+        downloaded += n as u64;
+        pb.set_position(downloaded);
+    }
+
+    pb.finish_with_message("Download complete");
 
     let mut tcp_6970_active = false;
     loop {
