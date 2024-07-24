@@ -95,7 +95,7 @@ fn main() {
     let client = Client::new();
 
     // Send a GET request to the URL
-    let mut response = client.get(url).send()?;
+    let mut response = client.get(url).send().unwrap();
 
     // Ensure the request was successful
     if !response.status().is_success() {
@@ -117,7 +117,7 @@ fn main() {
         .progress_chars("=>-"));
 
     // Open a file in write mode
-    let mut file = File::create(file_path)?;
+    let mut file = File::create(file_path).unwrap();
 
     // Create a buffer to read chunks of data
     let mut buffer = [0; 8192];
