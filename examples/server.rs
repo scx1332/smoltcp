@@ -87,6 +87,7 @@ fn main() {
     let tcp4_handle = sockets.add(tcp4_socket);
 
 
+
     // The URL of the file you want to download
     let url = "http://5.9.155.174:8000/out.txt";
 
@@ -169,7 +170,9 @@ fn main() {
 
         if socket.can_send() {
             debug!("tcp:6969 send greeting");
-            //writeln!(socket, "hello").unwrap();
+            for _ in 0..10 {
+                socket.send_slice(b"hello\n").unwrap();
+            }
             debug!("tcp:6969 close");
             socket.close();
         }
