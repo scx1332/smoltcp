@@ -16,7 +16,7 @@ use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr, Ipv4Address, Ipv6Address
 use std::io::Write;
 use std::io::Read;
 fn main() {
-    utils::setup_logging("");
+    //utils::setup_logging("");
 
     let (mut opts, mut free) = utils::create_options();
     utils::add_tuntap_options(&mut opts, &mut free);
