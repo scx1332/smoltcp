@@ -131,7 +131,7 @@ fn main() {
         file.write_all(&buffer[..n]).unwrap();
         downloaded += n as u64;
         pb.set_position(downloaded);
-        sleep(Duration::from_millis(10).to_std().unwrap());
+        sleep(std::time::Duration::from_secs_f64(0.01));
     }
 
     pb.finish_with_message("Download complete");
