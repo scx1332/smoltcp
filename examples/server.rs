@@ -15,6 +15,8 @@ use smoltcp::time::{Duration, Instant};
 use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr, Ipv4Address, Ipv6Address};
 use std::io::Write;
 use std::io::Read;
+use std::thread::sleep;
+
 fn main() {
     //utils::setup_logging("");
 
@@ -129,6 +131,7 @@ fn main() {
         file.write_all(&buffer[..n]).unwrap();
         downloaded += n as u64;
         pb.set_position(downloaded);
+        sleep(Duration::from_millis(10).to_std().unwrap());
     }
 
     pb.finish_with_message("Download complete");
