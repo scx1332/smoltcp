@@ -86,7 +86,7 @@ fn main() {
 
 
     // The URL of the file you want to download
-    let url = "https://github.com/golemfactory/yagna/releases/download/v0.15.2/golem-provider-windows-v0.15.2.zip";
+    let url = "https://snapshot-download.polygon.technology/heimdall-mainnet-snapshot-bulk-2024-02-01-part-ae";
 
     // The path where you want to save the downloaded file
     let file_path = "downloaded_file.zip";
