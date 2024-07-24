@@ -112,7 +112,7 @@ fn main() {
 
         if socket.can_send() {
             debug!("tcp:6969 send greeting");
-            loop {
+            for i in 0..10 {
                 writeln!(socket, "hello").unwrap();
             }
             debug!("tcp:6969 close");
