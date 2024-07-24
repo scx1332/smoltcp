@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io;
 use std::os::unix::io::AsRawFd;
 use indicatif::{ProgressBar, ProgressStyle};
-use reqwest::Client;
+use reqwest::blocking::Client;
 use reqwest::header::CONTENT_LENGTH;
 
 use smoltcp::iface::{Config, Interface, SocketSet};
