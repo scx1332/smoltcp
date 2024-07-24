@@ -88,55 +88,6 @@ fn main() {
 
 
 
-    // The URL of the file you want to download
-    let url = "http://5.9.155.174:8000/out.txt";
-
-    // The path where you want to save the downloaded file
-    let file_path = "downloaded_file.zip";
-
-    // Create an HTTP client
-    let client = Client::new();
-
-    // Send a GET request to the URL
-    let mut response = client.get(url).send().unwrap();
-
-    // Ensure the request was successful
-    if !response.status().is_success() {
-        panic!("Failed to download file: {}", response.status());
-    }
-
-    // Get the content length from the headers if available
-    let total_size = response
-        .headers()
-        .get(CONTENT_LENGTH)
-        .and_then(|len| len.to_str().ok())
-        .and_then(|len| len.parse().ok())
-        .unwrap_or(0);
-
-    // Create a progress bar
-    let pb = ProgressBar::new(total_size);
-    pb.set_style(ProgressStyle::default_bar()
-        .template("{msg}\n{wide_bar} {bytes}/{total_bytes}")
-        .progress_chars("=>-"));
-
-    // Open a file in write mode
-    let mut file = File::create(file_path).unwrap();
-
-    // Create a buffer to read chunks of data
-    let mut buffer = [0; 8192];
-    let mut downloaded = 0;
-
-    // Read the response body in chunks and write to the file
-    while let Ok(n) = response.read(&mut buffer) {
-        if n == 0 { break; }
-        file.write_all(&buffer[..n]).unwrap();
-        downloaded += n as u64;
-        pb.set_position(downloaded);
-        sleep(std::time::Duration::from_secs_f64(0.01));
-    }
-
-    pb.finish_with_message("Download complete");
-
     let mut tcp_6970_active = false;
     loop {
         let timestamp = Instant::now();
