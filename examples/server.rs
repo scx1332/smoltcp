@@ -99,7 +99,7 @@ fn main() {
 
     // Ensure the request was successful
     if !response.status().is_success() {
-        return Err(Box::new(io::Error::new(io::ErrorKind::Other, "Failed to download file")));
+        panic!("Failed to download file: {}", response.status());
     }
 
     // Get the content length from the headers if available
