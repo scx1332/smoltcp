@@ -86,7 +86,7 @@ fn main() {
 
 
     // The URL of the file you want to download
-    let url = "https://snapshot-download.polygon.technology/heimdall-mainnet-snapshot-bulk-2024-02-01-part-ae";
+    let url = "http://5.9.155.174:8000/out.txt";
 
     // The path where you want to save the downloaded file
     let file_path = "downloaded_file.zip";
